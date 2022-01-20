@@ -1,0 +1,49 @@
+defmodule ListOps do
+
+  def nth(1, [h|_t]) do h end
+  def nth(n, [_h|t]) do
+    nth(n-1, t)
+  end
+
+  def len([]) do 0 end
+  def len([_h|t]) do
+    len(t) + 1
+  end
+
+  def sum([]) do 0 end
+  def sum([h|t]) do
+    h + sum(t)
+  end
+ 
+  def duplicate([h|[]]) do [h,h] end
+  def duplicate([h|t]) do
+    [h, h | duplicate(t)]
+  end
+
+  def add(x,[]) do [x] end
+  def add(x, [h|t]) do
+    #case h do
+      #x -> [x|t]
+      #_ -> [h | add(x, t)]
+    #end
+      
+
+    #^x = if h do
+      #IO.puts("Already in list!")
+      ##[x|t]
+    #else
+      #add(x, t)
+      #[x, h|t]
+    #end
+    
+
+    cond do
+      x == h -> [x|t]
+      true -> [h| add(x,t)]
+    end
+
+    
+
+  end
+  
+end
