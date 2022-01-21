@@ -22,28 +22,24 @@ defmodule ListOps do
 
   def add(x,[]) do [x] end
   def add(x, [h|t]) do
-    #case h do
-      #x -> [x|t]
+    #case x do
+      #^h -> [x|t]
       #_ -> [h | add(x, t)]
     #end
-      
 
-    #^x = if h do
-      #IO.puts("Already in list!")
-      ##[x|t]
-    #else
-      #add(x, t)
-      #[x, h|t]
-    #end
-    
-
-    cond do
-      x == h -> [x|t]
-      true -> [h| add(x,t)]
+    if x == h do 
+      IO.puts("Already in list!")
+      #[x|t]
+    else
+      [h| add(x,t)]
     end
-
     
+    #THE RIGHT ONE
+    #cond do
+      #x == h -> [x|t]
+      #true -> [h| add(x,t)]
+    #end
 
   end
-  
+
 end
