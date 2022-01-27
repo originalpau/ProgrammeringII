@@ -123,9 +123,10 @@ defmodule Deriv do
   end
 
   def deriv({:log, e}, v) do
-    {:mul,
-      {:div, {:num, 1}, e},
-      deriv(e, v)}
+    {:div, deriv(e, v), e}
+    #{:mul,
+      #{:div, {:num, 1}, e},
+      #deriv(e, v)}
   end
 
   #Calculator
@@ -197,10 +198,10 @@ defmodule Deriv do
   def pprint({:num, n}) do "#{n}" end
   def pprint({:var, v}) do "#{v}" end
   def pprint({:add, e1, e2}) do "(#{pprint(e1)} + #{pprint(e2)})" end
-  def pprint({:mul, e1, e2}) do "(#{pprint(e1)}*#{pprint(e2)})" end
-  def pprint({:exp, e1, e2}) do "(#{pprint(e1)}^#{pprint(e2)})" end
+  def pprint({:mul, e1, e2}) do "#{pprint(e1)} * #{pprint(e2)}" end
+  def pprint({:exp, e1, e2}) do "#{pprint(e1)}^#{pprint(e2)}" end
   def pprint({:sub, e1, e2}) do "(#{pprint(e1)} - #{pprint(e2)})" end
-  def pprint({:div, e1, e2}) do "(#{pprint(e1)}/#{pprint(e2)})" end
+  def pprint({:div, e1, e2}) do "(#{pprint(e1)} / #{pprint(e2)})" end
   def pprint({:log, e}) do "ln(#{pprint(e)})" end
 
 end
