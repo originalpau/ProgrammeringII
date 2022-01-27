@@ -113,6 +113,9 @@ defmodule Deriv do
   def deriv({:sub, e1, e2}, v) do
     {:sub, deriv(e1, v), deriv(e2, v)}
   end
+  
+  # 1/x 
+  def deriv({:div, {:num, n}, {:var, v}}, v) do {:div, {:num, n*-1}, {:exp, {:var, v}, {:num, 2}}} end
 
   def deriv({:div, e1, e2}, v) do
     {:div,
@@ -122,12 +125,15 @@ defmodule Deriv do
       {:exp, e2, {:num, 2}}}
   end
 
-  def deriv({:log, e}, v) do
-    {:div, deriv(e, v), e}
-    #{:mul,
-      #{:div, {:num, 1}, e},
-      #deriv(e, v)}
-  end
+  # ln(x) with one variable
+  def deriv({:log, {:var, v}}, v) do {:div, {:num, 1}, {:var, v}} end  
+
+  # ln(2x) with multiplication
+  def deriv({:log, {:mul, _, {:var, v}}}, v) do {:div, {:num, 1}, {:var, v}} end
+  def deriv({:log, {:mul, {:var, v}, _}}, v) do {:div, {:num, 1}, {:var, v}} end
+
+  # ln(x + 1) with chain rules
+  def deriv({:log, e}, v) do {:div, deriv(e, v), e} end
 
   #Calculator
   def calc({:num, n}, _, _) do {:num, n} end
@@ -201,7 +207,7 @@ defmodule Deriv do
   def pprint({:mul, e1, e2}) do "#{pprint(e1)} * #{pprint(e2)}" end
   def pprint({:exp, e1, e2}) do "#{pprint(e1)}^#{pprint(e2)}" end
   def pprint({:sub, e1, e2}) do "(#{pprint(e1)} - #{pprint(e2)})" end
-  def pprint({:div, e1, e2}) do "(#{pprint(e1)} / #{pprint(e2)})" end
+  def pprint({:div, e1, e2}) do "#{pprint(e1)} / #{pprint(e2)}" end
   def pprint({:log, e}) do "ln(#{pprint(e)})" end
 
 end
