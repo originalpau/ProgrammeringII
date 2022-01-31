@@ -1,8 +1,7 @@
 defmodule Emulator do
 
-  @type label()
-  @type data()
-  @type expr() :: {:prgm, code(), data()}
+  #@type label(), data() :: [{:label, :arg}, {:word, 12}]
+  #@type expr() :: {:prgm, code(), data()}
 
   def run(prgm) do
     {code, data} = Program.load(prgm)
@@ -23,4 +22,4 @@ defmodule Emulator do
 
     end
   end
-
+end
