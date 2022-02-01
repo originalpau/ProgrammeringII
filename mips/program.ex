@@ -29,13 +29,13 @@ defmodule Program do
     {List.to_tuple(prgm), memory}
   end
 
-  # [index, label], [index, värde]
+  # lab[label, addr], mem[index, värde]
   def load_data(data) do store(data, 0, [], []) end
 
   def store([], _, labels, values) do {labels, values} end
   def store([h|t], index, labels, values) do
     case h do
-      {:label, l} -> store(t, index, [{index, l}|labels], values)
+      {:label, l} -> store(t, index, [{l, index}|labels], values)
       {:word, w} -> store(t, index+4, labels, [{index, w}|values])
     end
   end
@@ -51,7 +51,7 @@ defmodule Program do
   def get_labels([], i, labels, instr) do {i, labels, instr} end
   def get_labels([h|t], index, labels, instr) do
     case h do
-      {:label, l} -> get_labels(t, index, [{index, l}|labels], instr)
+      {:label, l} -> get_labels(t, index, [{l, index}|labels], instr)
       _ -> get_labels(t, index+4, labels, [h|instr])
     end
   end
@@ -70,21 +70,20 @@ defmodule Program do
   end
 
   def find_bne_addr(l, i, labels) do
-    {addr, label} = lookup(l, labels, [])
+    {label, addr} = lookup(l, labels, [])
     (addr-i)
   end
 
   def find_mem_key(l, labels) do
-    {addr, label} = lookup(l, labels, [])
+    {label, addr} = lookup(l, labels, [])
     addr
   end
 
   def lookup(_, [], _) do :error end
-  def lookup(label, [{addr,label}|t], searched) do {addr, label} end
-  def lookup(label, [h|t], searched) do
-    lookup(label, t, [h|searched])
+  def lookup(key, [{key, val}|t], searched) do {key, val} end
+  def lookup(key, [h|t], searched) do
+    lookup(key, t, [h|searched])
   end
-
 
   def read_instruction(code, pc) do
     pc = div(pc, 4)

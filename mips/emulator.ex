@@ -36,14 +36,16 @@ defmodule Emulator do
 
   def run(pc, code, reg, mem, out) do
     next = Program.read_instruction(code, pc)
-    :io.format("instruction ~w\nRegisters: ~w\n", [next, reg])
+    :io.format("instruction ~w\nRegisters: ~w\n\n", [next, reg])
     case next do
       :halt -> Out.close(out)
 
       {:out, rs} ->
         pc = pc + 4
         s = Register.read(reg, rs)
+        :io.format("out:  ~w\n", [s])
         out = Out.put(out, s)
+        :io.format("outList:  ~w\n", [out])
         run(pc, code, reg, mem, out)
 
       {:addi, rd, rs, imm} ->
@@ -74,9 +76,11 @@ defmodule Emulator do
       {:lw, rd, rt, imm} ->
         rt_val = Register.read(reg, rt)
         mem_addr = rt_val + imm
-        mem_val = Program.read_mem(mem, mem_addr)
-        reg = Register.write(reg, rd, mem_val)
-        run(pc+4, code, mem, reg, out)
+        word_val = Program.read_mem(mem, mem_addr)
+        :io.format("lw_val: ~w\n", [word_val])
+        reg = Register.write(reg, rd, word_val)
+        :io.format("reg: ~w\n", [reg])
+        run(pc+4, code, reg, mem, out)
 
     end
   end
