@@ -8,8 +8,8 @@ defmodule Test do
   end
 
   def demo() do
-    [{:addi, 1, 0, 10},    # $1 <- 10 
-     {:addi, 2, 0, 5},     # $2 <- 5 
+    [{:addi, 1, 0, 10},    # $1 <- 10
+     {:addi, 2, 0, 5},     # $2 <- 5
      {:add, 3, 1, 2},      # $3 <- $1 + $2
      {:sw, 3, 0, 7},       # mem[0 + 7] <- $3
      {:lw, 4, 0, 7},       # $4 <- mem[0+7]
@@ -19,7 +19,7 @@ defmodule Test do
      {:bne, 4, 0, -3},     # branch if not equal
      {:halt}]
   end
-  
-  
+
+
 
 end

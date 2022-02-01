@@ -14,7 +14,7 @@ defmodule ListOps do
   def sum([h|t]) do
     h + sum(t)
   end
- 
+
   def duplicate([h|[]]) do [h,h] end
   def duplicate([h|t]) do
     [h, h | duplicate(t)]
@@ -27,18 +27,18 @@ defmodule ListOps do
       #_ -> [h | add(x, t)]
     #end
 
-    if x == h do 
-      IO.puts("Already in list!")
-      #[x|t]
-    else
-      [h| add(x,t)]
-    end
-    
+    # if x == h do
+    #   IO.puts("Already in list!")
+    #   #[x|t]
+    # else
+    #   [h| add(x,t)]
+    # end
+
     #THE RIGHT ONE
-    #cond do
-      #x == h -> [x|t]
-      #true -> [h| add(x,t)]
-    #end
+    cond do
+      x == h -> [x|t]
+      true -> [h| add(x,t)]
+    end
 
   end
 

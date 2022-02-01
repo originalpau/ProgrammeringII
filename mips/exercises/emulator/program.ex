@@ -1,13 +1,31 @@
 defmodule Program do
 
+  def test() do
+    code = [{:add, 1, 0, 4},
+            {:out, 1},
+            {:label, :loop},
+            {:sub, 4, 4, 5},
+            {:sub, 4, 4, 5},
+            {:sub, 4, 4, 5},
+            {:bne, 1, 0, :loop},
+            :halt]
+    data = [{:label, :arg}, {:word, 12}]
+    prgm = {:prgm, code, data}
+    result = load(prgm)
+    :io.format("result : ~w\n\n", [result])
+  end
+
   def load({:prgm, code, data}) do
-    {data, labels} = endata(data) 
+    {data, labels} = endata(data)
+    :io.format("data : ~w\n\labels: ~w\n\n", [data, labels])
+
     code = encode(code, labels)
+    :io.format("code : ~w\n\labels: ~w\n\n", [code, labels])
     {{:code, List.to_tuple(code)}, {:data, Map.new(data)}}
   end
 
   def read_instruction({:code, code}, pc) do
-    0 = rem(pc,4) 
+    0 = rem(pc,4)
     elem(code, div(pc,4))
   end
 
@@ -46,7 +64,7 @@ defmodule Program do
   end
 
   def spaces(i, n, words) do
-    ## adjust to multiple of 4 
+    ## adjust to multiple of 4
     a = i + rem(4-rem(i,4), 4)
     {n+a, List.foldr(:lists.seq(n, n-1+a, 4), words, fn(x,acc) ->   [{x, 0}|acc] end)}
   end
@@ -60,45 +78,47 @@ defmodule Program do
   def write_word({:data, data}, i, val) do
     0 = rem(i, 4)   ## addr must be amultiple of 4
     {:data, Map.put(data, i, val)}
-  end  
+  end
 
 
 
   def encode(prgm, labels) do
     {prgm, n, labels}  = collect(prgm, labels)
+    :io.format("prgm : ~w\nn: ~w\nlabels: ~w\n\n", [prgm, n, labels])
+
     ## The program is in reversed order, this i by intention, we can
     ## now do the encoding of the code with out a reverse operation.
     encode(prgm, n, [], labels)
   end
 
 
-  
+
 
   ## Collecting and removeing labels from code segment.
 
-  def collect(data, labels) do 
+  def collect(data, labels) do
     collect(data, 0, [], labels)
   end
-  
+
   def collect([], n, data, labels) do {data, n, labels} end
   def collect([{:label, name}|rest], n, data, labels) do
-    collect(rest, n, data, [{name, n} | labels]) 
+    collect(rest, n, data, [{name, n} | labels])
   end
   def collect([val|rest], n, data, labels) do
     collect(rest, n+4, [val|data],  labels)
   end
 
   ## Encoding instructions using the labels collected.
-  
+
   def encode([], _, prgm, _) do prgm end
   def encode([instr| rest], n, prgm, labels) do
     encode(rest, n-4, [encode(instr, n, labels)|prgm], labels)
   end
-  
+
 
   ## These are the instructions that we will use. More instructions
   ## are easily added to the system.
-  
+
   def encode(instr, addr, labels) do
     case instr do
 
@@ -117,14 +137,14 @@ defmodule Program do
 
       {:beq,  rs, rt, offs} when is_atom(offs) ->
 	{:beq, rs, rt, offset(offs, addr, labels)}
-	
+
       {:bne,  rs, rt, offs} when is_atom(offs) ->
 	{:bne, rs, rt, offset(offs, addr, labels)}
 
       instr -> instr
     end
   end
-  
+
   ## If the immediate value is a label it is resolved.
   def immediate(label, labels) do
     {_, addr} = List.keyfind(labels, label, 0)
@@ -136,8 +156,8 @@ defmodule Program do
     {_, abs} = List.keyfind(labels, label, 0)
     (abs - addr)
   end
-    
 
-  
-  
+
+
+
 end
