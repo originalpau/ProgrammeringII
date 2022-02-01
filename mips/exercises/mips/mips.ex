@@ -6,9 +6,9 @@ defmodule MIPS do
 
     :io.format("code : ~w\n\ndata: ~w\n\n", [code, data])
 
-    out = Out.start()
+    # out = Out.start()
 
-    mem = Memory.start(data)
+    # mem = Memory.start(data)
 
     #brn = Branch.start()
 

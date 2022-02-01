@@ -11,8 +11,8 @@ defmodule Program do
             :halt]
     data = [{:label, :arg}, {:word, 12}]
     prgm = {:prgm, code, data}
-    result = load(prgm)
-    :io.format("result : ~w\n\n", [result])
+    {code, data} = load(prgm)
+    :io.format("code : ~w\ndata: ~w\n\n", [code, data])
   end
 
   # [index, värde]  {24, 12}
@@ -26,6 +26,7 @@ defmodule Program do
 
     prgm = load_code(code, labels)
     :io.format("program : ~w\n\labels: ~w\n\n", [prgm, labels])
+    {List.to_tuple(prgm), memory}
   end
 
   # [index, label], [index, värde]
@@ -62,14 +63,20 @@ defmodule Program do
 
   def load_code(instr, i, labels) do
     case instr do
-      {:bne, rs, rt, l} -> {:bne, rs, rt, find(l, i, labels)}
+      {:bne, rs, rt, l} -> {:bne, rs, rt, find_bne_addr(l, i, labels)}
+      {:lw, rd, rt, l} -> {:lw, rd, rt, find_mem_key(l, labels)}
       _ -> instr
     end
   end
 
-  def find(l, i, labels) do
+  def find_bne_addr(l, i, labels) do
     {addr, label} = lookup(l, labels, [])
     (addr-i)
+  end
+
+  def find_mem_key(l, labels) do
+    {addr, label} = lookup(l, labels, [])
+    addr
   end
 
   def lookup(_, [], _) do :error end
@@ -79,7 +86,15 @@ defmodule Program do
   end
 
 
-  #def read_instruction(code, pc) do _ end
+  def read_instruction(code, pc) do
+    pc = div(pc, 4)
+    elem(code, pc)
+  end
+
+  def read_mem(data, addr) do
+    {addr, val} = lookup(addr, data, [])
+    val
+  end
 
 
 end

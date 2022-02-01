@@ -30,12 +30,13 @@ defmodule Emulator do
   def run(prgm) do
     {code, data} = Program.load(prgm)
     out = Out.new()
-    reg = Registers.new()
+    reg = Register.new()
     run(0, code, reg, data, out)
   end
 
   def run(pc, code, reg, mem, out) do
     next = Program.read_instruction(code, pc)
+    :io.format("instruction ~w\nRegisters: ~w\n", [next, reg])
     case next do
       :halt -> Out.close(out)
 
@@ -46,10 +47,36 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:addi, rd, rs, imm} ->
-        pc = pc + 4
-        s = Register.read(reg, rs)
-        reg = Register.write(reg, rd, s + imm)
-        run(pc, code, reg, mem, out)
+        reg_val = Register.read(reg, rs)
+        reg = Register.write(reg, rd, reg_val + imm)
+        run(pc+4, code, reg, mem, out)
+
+      {:add, rd, rs, rt} ->
+        rs_val = Register.read(reg, rs)
+        rt_val = Register.read(reg, rt)
+        reg = Register.write(reg, rd, rs_val + rt_val)
+        run(pc+4, code, reg, mem, out)
+
+      {:sub, rd, rs, rt} ->
+        rs_val = Register.read(reg, rs)
+        rt_val = Register.read(reg, rt)
+        reg = Register.write(reg, rd, rs_val - rt_val)
+        run(pc+4, code, reg, mem, out)
+
+      {:bne, rs, rt, imm} ->
+        rs_val = Register.read(reg, rs)
+        rt_val = Register.read(reg, rt)
+        cond do
+          rs_val != rt_val -> run(pc+imm, code, reg, mem, out)
+          true -> run(pc+4, code, reg, mem, out)
+        end
+
+      {:lw, rd, rt, imm} ->
+        rt_val = Register.read(reg, rt)
+        mem_addr = rt_val + imm
+        mem_val = Program.read_mem(mem, mem_addr)
+        reg = Register.write(reg, rd, mem_val)
+        run(pc+4, code, mem, reg, out)
 
     end
   end
