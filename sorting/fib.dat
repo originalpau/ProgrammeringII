@@ -1,0 +1,12 @@
+# This is a comment since it starts with #
+# Fibonacchi of n, time in us
+# n	time
+12	1.41
+14	3.23
+16	8.42
+18	23.23
+20	56.67
+22	145.80
+24	425.75
+26	1380.20
+28	2791.96

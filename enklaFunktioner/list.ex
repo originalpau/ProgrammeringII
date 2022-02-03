@@ -39,7 +39,24 @@ defmodule ListOps do
       x == h -> [x|t]
       true -> [h| add(x,t)]
     end
-
   end
+
+  #insertion sort
+  def isort(l) do isort(l, []) end
+
+  def isort([], sorted) do sorted end
+  def isort([h|t], sorted) do
+    isort(t, insert(h,sorted))
+  end
+
+  def insert(e,[]) do [e] end
+  def insert(e,[h|t]) do
+    if e < h do
+      [e,h|t]
+    else
+      [h|insert(e,t)]
+    end
+  end
+
 
 end

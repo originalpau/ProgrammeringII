@@ -27,7 +27,7 @@ defmodule Tree do
       #end
     #end
   #end
-  
+
   #Sökning i ett ordnat träd, utan löv.
   def lookup(_, :nil) do :no end
   def lookup(key, {:node, key, value, _, _}) do {:value, value} end
@@ -59,18 +59,18 @@ defmodule Tree do
       {:node, k, v, insert(key, value, left), right}
     else
       {:node, k, v, left, insert(key, value, right)}
-    end 
+    end
   end
 
   #Ta bort ett värde i ett träd.
   def delete(key, {:node, key, _, :nil, :nil}) do :nil end
   def delete(key, {:node, key, _, :nil, right}) do right end
   def delete(key, {:node, key, _, left, :nil}) do left end
-  def delete(key, {:node, key, _, left, right}) do
-    {k, v} = ...
-    {:node, ..., ..., ..., ...}
-    #{:node, left, right}
-  end
+  # def delete(key, {:node, key, _, left, right}) do
+  #   {k, v} = ...
+  #   {:node, ..., ..., ..., ...}
+  #   #{:node, left, right}
+  # end
   def delete(key, {:node, k, v, left, right}) do
     if key < k do
       {:node, k, v, delete(key, left), right}
