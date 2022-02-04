@@ -1,16 +1,21 @@
 defmodule Bench do
 
   def bench() do bench(100) end
-
   def bench(l) do
 
     ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
 
+    # i = längden på listan,
+    # f = den funktion som vi skall bencha
     time = fn (i, f) ->
+      # Skapar random tal upp till i storlek
       seq = Enum.map(1..i, fn(_) -> :rand.uniform(100000) end)
+      # Accessar element 0 på tupeln som skapas av :timer (alltså runtime)
+      # för sortering mha en funktion, med en specifik listlängd.
       elem(:timer.tc(fn () -> loop(l, fn -> f.(seq) end) end),0)
     end
 
+    # i är längden på listan
     bench = fn (i) ->
 
       list = fn (seq) ->
@@ -21,6 +26,8 @@ defmodule Bench do
         List.foldr(seq, tree_new(), fn (e, acc) -> tree_insert(e, acc) end)
       end
 
+      # sparar runtime tiden för en listlängd på variabeln.
+      # Hämtad från funktionen time.
       tl = time.(i, list)
       tt = time.(i, tree)
 
