@@ -8,7 +8,7 @@ defmodule Fib do
     ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
     :io.format(file, "# Benchmark for sorting, ~w times, in a list or tuple, all times in ms.~n", [l])
     # :io.format(file, "#~8s ~8s ~8s~n", ["l", "list", "tree"])
-    :io.format(file, "size\t\tlist\t\ttree\n", [])
+    :io.format(file, "# size\t\tlist\t\ttree\n", [])
     Enum.each(ls, fn n -> bench(l, n, file) end)
     File.close(file)
   end
