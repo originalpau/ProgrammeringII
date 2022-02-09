@@ -2,7 +2,6 @@ set terminal pdf
 set output "test.pdf"
 
 set style line 1 lc rgb "black" lw 1 pt 1
-set size 1,5
 set title ""
 
 set xlabel "n"

@@ -46,6 +46,7 @@ defmodule Bench do
     loop(n-1, f)
   end
 
+  ########### Sorting functions ############
   def list_new() do [] end
 
   def list_insert(e,[]) do [e] end
