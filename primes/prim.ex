@@ -24,18 +24,28 @@ defmodule Prim do
     [h|append(t,y)]
   end
 
-  # Reverse the list.
+  # Reverse the list. O(N) but tail recursive. Executes recursion in paralell in the working memory.
   def rev(l) do rev(l, []) end
   def rev([], res) do res end
   def rev([h|t], res) do
     rev(t, [h|res])
   end
 
+  # O(1)?
+  def tailr([], y) do y end
+  def tailr([h|t], y) do
+    tailr(t, [h|y])
+  end
+  def append_tail(x, y) do
+    reverse = rev(x)
+    tailr(reverse, [y])
+  end
+
   # Adds prime to end of primes list.
   def second(n) do second(Enum.to_list(2..n), []) end
   def second([], primes) do primes end
   def second([h|t], primes) do
-    second(filter(t, &(rem(&1, h) != 0)), append(primes, h))
+    second(filter(t, &(rem(&1, h) != 0)), append_tail(primes, h))
   end
 
   # Deletes numbers that are not prime without using an extra list.
@@ -49,7 +59,7 @@ defmodule Prim do
   ###################################################################
 
   def bench() do
-    {:ok, file} = File.open("prim.dat", [:write, :list])
+    {:ok, file} = File.open("prim_tail.dat", [:write, :list])
     # antal loop
     l = 100
     # list storlek: Enum.to_list(2..n)
