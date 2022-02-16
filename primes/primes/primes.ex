@@ -1,13 +1,33 @@
 defmodule Primes do
 
-  def z(n) do
+  def z_test(n) do
     fn() ->
       :io.format("generate ~w\n", [n])
       {n, z(n+1)}
     end
   end
 
-  def filter(n, f) do
+  def z(n) do
+    fn() -> {n, z(n+1)} end
+  end
+
+  def filter(n,f) do
+    {c,n} = n.()
+    case rem(c,f) do
+      0 -> filter(n,f)
+      _ -> {c, fn() -> filter(n,f) end}
+    end
+  end
+
+  def filter_cond(n,f) do
+    {c,n} = n.()
+    cond do
+      rem(c,f) == 0 -> filter(n,f)
+      rem(c,f) != 0 -> {c, fn() -> filter(n,f) end}
+    end
+  end
+
+  def filter_if(n, f) do
     {c,n} = n.()
     :io.format("check if ~w is divisable by ~w\n", [c, f])
     if rem(c, f) == 0 do
@@ -50,13 +70,14 @@ defmodule Primes do
     def reduce(primes, {:suspend, acc}, fun) do
       {:suspended, acc, fn(cmd) -> reduce(primes, cmd, fun) end}
     end
-    
+
     def reduce(primes, {:cont, acc}, fun) do
       {p, next} = Primes.next(primes)
       reduce(next, fun.(p,acc), fun)
     end
   end
 
+  ####################################
   def next(%Primes{next: n}) do
     {p, n} = n.()
     {p, %Primes{next: n}}
@@ -66,4 +87,8 @@ end
 
 # Enum.take(Stream.map(Primes.primes(),fn(x) -> 2*x end), 5)
 # =
-# Primes.primes() |> Stream.map(&(&1*2)) |> Enum.take(5)
+# Primes.primes()
+# |> IO.inspect(label: "before stream")
+# |> Stream.map(&(&1*2))
+# |> IO.inspect(label: "after stream")
+# |> Enum.take(5)
