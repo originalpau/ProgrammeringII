@@ -38,3 +38,22 @@ end
 # For testing in command line
 # seq = Enum.map(1..12, fn(_) -> :rand.uniform(100000) end)
 # List.foldr(seq, [], fn (e, acc) -> Bench.list_insert(e, acc) end)
+
+# Quicksort, from Complexity lecture
+def qsort([]) do [] end
+def qsort([h] do [h] end
+def qsort(all) do
+  {low, high} = partition(all)
+  lowS = qsort(low)
+  highS = qsort(high)
+  append(lowS, highS)
+end
+
+# Mergesort
+def msort([]) do [] end
+def msort(l) do
+  {a, b} =  split(l)
+  as = msort(a)
+  bs = msort(b)
+  merge(as, bs)
+end
