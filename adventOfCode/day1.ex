@@ -24,7 +24,7 @@ defmodule Day1 do
     end
   end
 
-  def part2([a,b,c|t]) do part2(a+b+c, t, 0) end
+  def part2([a,b,c|t]) do part2(a+b+c, [b,c|t], 0) end
   def part2(_, [_y,_z], count) do count end
   def part2(sum, [b,c,d|t], count) do
     if sum < b+c+d do
@@ -33,5 +33,13 @@ defmodule Day1 do
       part2(b+c+d, [c,d|t], count)
     end
   end
+
+  ##########################################
+
+#   l
+# |> Stream.chunk_every(3, 1)
+# |> Stream.map(&Enum.sum/1)
+# |> Stream.chunk_every(2, 1, :discard)
+# |> Enum.count(fn [a, b] -> a < b end)
 
 end
