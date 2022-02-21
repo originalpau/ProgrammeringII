@@ -33,13 +33,5 @@ defmodule Day1 do
       part2(b+c+d, [c,d|t], count)
     end
   end
-
-  ##########################################
-
-#   l
-# |> Stream.chunk_every(3, 1)
-# |> Stream.map(&Enum.sum/1)
-# |> Stream.chunk_every(2, 1, :discard)
-# |> Enum.count(fn [a, b] -> a < b end)
-
+  
 end
