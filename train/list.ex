@@ -1,4 +1,4 @@
-defmodule Shunt do
+defmodule Modify do
 
   # take/2 returns the list containing the first n elements of the list
   def take(l, n) do take(l, n, []) end

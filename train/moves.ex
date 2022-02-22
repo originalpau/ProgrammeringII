@@ -1,5 +1,5 @@
 defmodule Moves do
-  import Shunt
+  import Modify
 
   def single(move, {main, one, two}) do
     case move do
@@ -13,7 +13,7 @@ defmodule Moves do
         if n > 0 do
           {remove_end(main, n), one, add_first(main, two, n)}
         else
-          {add_end(main, one, n), one, remove_first(two, n)}
+          {add_end(main, two, n), one, remove_first(two, n)}
         end
       {_, 0} -> {main, one, two}
     end
