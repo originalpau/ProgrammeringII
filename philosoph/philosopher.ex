@@ -1,5 +1,5 @@
 defmodule Philosopher do
-  @dream 1000
+  @dream 1
   @eat 50
   @delay 200
 
@@ -50,3 +50,5 @@ end
 # right = Chopstick.start
 # name = "Rudolf"
 # pid = spawn(fn() -> Philosopher.start(5, left, right, name, self()) end)
+
+# 4.Experiments: When @dream 1, they only get one chopstick. No one gets to eat.

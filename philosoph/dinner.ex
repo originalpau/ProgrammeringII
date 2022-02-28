@@ -18,6 +18,7 @@ defmodule Dinner do
 
   def wait(0,chopsticks) do
     Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
+    IO.puts("Finished")
   end
   def wait(n, chopsticks) do
     receive do
@@ -25,5 +26,5 @@ defmodule Dinner do
       :abort -> Process.exit(self(), :kill)
     end
   end
-  
+
 end
