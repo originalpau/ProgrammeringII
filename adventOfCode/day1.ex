@@ -33,5 +33,16 @@ defmodule Day1 do
       part2(b+c+d, [c,d|t], count)
     end
   end
-  
+
+end
+
+#################### ANNAN VARIANT PÅ LÖSNING ################################
+def solution1([a, b | tail], count) do
+  next_count = if a < b do count + 1 else count end
+  solution1([b | tail], next_count)
+end
+
+def solution2([a, b, c, d | tail], count) do
+  next_count = if a + b + c < b + c + d do count + 1 else count end
+  solution2([b, c, d | tail], next_count)
 end
