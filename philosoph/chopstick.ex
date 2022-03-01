@@ -28,6 +28,17 @@ defmodule Chopstick do
     end
   end
 
+  # Break the potential deadlock with request
+  # that specifies milliseconds to wait for a chopstick.
+  def request(stick, timeout) do
+    send(stick, {:request, self()})
+    receive do
+      :granted -> {:ok, :granted}
+    after
+      timeout -> :no
+    end
+  end
+
   def return(stick) do
     send(stick, :return)
   end

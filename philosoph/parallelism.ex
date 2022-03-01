@@ -25,7 +25,10 @@ defmodule Parallel do
     f2 = collect(r2)
     f1 + f2
   end
-  def comb(n,_) do fib_seq(n) end
+  def comb(n,_) do
+    fib_seq(n)
+    #1
+  end
 
   def paral(f) do
     ref = make_ref()
