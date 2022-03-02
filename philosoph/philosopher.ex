@@ -62,6 +62,32 @@ defmodule Philosopher do
   # end
 
   # Asynchronous function
+  # När det både är asynkront och med timeout, så blir cykeln av hämtning
+  # mycket kortare för varje filosof, därför är det mindre sannolikt att
+  # två filosofer håller på samma chopstick samtidigt.
+  # defp waiting(hunger, right, left, name, ctrl) do
+  #   IO.puts("#{name} is waiting for chopsticks, #{hunger} left")
+  #   left_ref = Chopstick.request(left)
+  #   right_ref = Chopstick.request(right)
+
+  #   case Chopstick.granted(left_ref, @timeout) do
+  #     :no ->
+  #       IO.puts("#{name} did not get a chopstick.")
+  #       #waiting(hunger, right, left, name, ctrl)
+
+  #     {:ok, ^left_ref} ->
+  #       IO.puts("#{name} received left chopstick!")
+  #       case Chopstick.granted(right_ref, @timeout) do
+  #         :no -> IO.puts("#{name} did not get the right chopstick.")
+  #         {:ok, ^right_ref} ->
+  #           IO.puts("#{name} received right chopstick!")
+  #           eat(hunger, right, left, name, ctrl)
+  #       end
+
+  #   end
+  # end
+
+  # Introduce a waiter
   defp waiting(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is waiting for chopsticks, #{hunger} left")
     left_ref = Chopstick.request(left)

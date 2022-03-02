@@ -23,7 +23,9 @@ defmodule Dinner do
   def wait(n, chopsticks) do
     receive do
       :done -> wait(n-1, chopsticks)
-      :abort -> Process.exit(self(), :kill)
+      :abort ->
+        :io.format("dinner aborted~")
+        Process.exit(self(), :kill)
     end
   end
 
