@@ -2,7 +2,7 @@ defmodule Philosopher do
   @dream 1
   @eat 1
   @delay 0
-  @timeout 10000
+  @timeout :infinity
 
   def sleep(0) do :ok end
   def sleep(t) do :timer.sleep(:rand.uniform(t)) end
@@ -20,7 +20,7 @@ defmodule Philosopher do
     IO.puts("#{name} is dreaming...")
     sleep(@dream)
     IO.puts("#{name} wakes up!")
-    #waiting(hunger, right, left, name, ctrl)
+    #waiting(hunger, right, left, name, ctrl, waiter)
     sit(hunger, right, left, name, ctrl, waiter)
   end
 
@@ -71,14 +71,14 @@ defmodule Philosopher do
     left_ref = Chopstick.request(left)
     right_ref = Chopstick.request(right)
 
-    case Chopstick.granted(left_ref, @timeout) do
+    case Chopstick.granted(left_ref) do
       :no ->
         IO.puts("#{name} did not get a chopstick.")
         #waiting(hunger, right, left, name, ctrl)
 
       {:ok, ^left_ref} ->
         IO.puts("#{name} received left chopstick!")
-        case Chopstick.granted(right_ref, @timeout) do
+        case Chopstick.granted(right_ref) do
           :no -> IO.puts("#{name} did not get the right chopstick.")
           {:ok, ^right_ref} ->
             IO.puts("#{name} received right chopstick!")
@@ -102,8 +102,12 @@ defmodule Philosopher do
     sleep(@eat)
     Chopstick.return(left)
     Chopstick.return(right)
+    dreaming(hunger-1, right, left, name, ctrl, waiter)
+    #leave(hunger, right, left, name, ctrl, waiter)
+  end
 
-    # Introduce a waiter
+   # Introduce a waiter
+  defp leave(hunger, right, left, name, ctrl, waiter) do
     IO.puts("#{name} asking waiter to leave...")
     send(waiter, {:leave, name, self()})
     receive do
