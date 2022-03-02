@@ -8,11 +8,12 @@ defmodule Dinner do
     c4 = Chopstick.start()
     c5 = Chopstick.start()
     ctrl = self()
-    Philosopher.start(5, c1, c2, "Arendt", ctrl)
-    Philosopher.start(5, c2, c3, "Hypatia", ctrl)
-    Philosopher.start(5, c3, c4, "Simone", ctrl)
-    Philosopher.start(5, c4, c5, "Elisabeth", ctrl)
-    Philosopher.start(5, c5, c1, "Ayn", ctrl)
+    waiter = Waiter.start()
+    Philosopher.start(5, c1, c2, "Arendt", ctrl, waiter)
+    Philosopher.start(5, c2, c3, "Hypatia", ctrl, waiter)
+    Philosopher.start(5, c3, c4, "Simone", ctrl, waiter)
+    Philosopher.start(5, c4, c5, "Elisabeth", ctrl, waiter)
+    Philosopher.start(5, c5, c1, "Ayn", ctrl, waiter)
     wait(5, [c1,c2,c3,c4,c5])
   end
 

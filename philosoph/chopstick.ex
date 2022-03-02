@@ -41,6 +41,12 @@ defmodule Chopstick do
     ref
   end
 
+  def granted(ref) do
+    receive do
+      {:granted, ^ref} -> {:ok, ref}
+    end
+  end
+
   def granted(ref, timeout) do
     receive do
       {:granted, ^ref} -> {:ok, ref}
