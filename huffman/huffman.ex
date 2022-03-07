@@ -11,7 +11,7 @@ defmodule Huffman do
   def text() do
     #'this is something that we should encode'
     #'this is an example of a huffman tree'
-    #'huffman'
+    'huffman'
     #'foo'
   end
 
@@ -25,9 +25,18 @@ defmodule Huffman do
   #   decode(seq, decode)
   # end
 
+  # def test do
+  #   sample = sample()
+  #   tree = tree(sample)
+  #   encode = encode_table(tree)
+  #   seq = encode(sample, encode)
+  #   decode(seq, encode)
+  # end
+
   def test do
-    sample = sample()
-    tree = tree(sample)
+    sample = text()
+    freq = freq(sample)
+    tree = huffman(freq)
     encode = encode_table(tree)
     seq = encode(sample, encode)
     decode(seq, encode)
@@ -35,6 +44,7 @@ defmodule Huffman do
 
   # Count frequency using insertion sort,
   # freq table is represented with [{char, freq}, ..]
+  # Output Huffman: [{104, 1}, {117, 1}, {102, 2}, {109, 1}, {97, 1}, {110, 1}]
   def freq(sample) do freq(sample, []) end
   def freq([], freq) do freq end
   def freq([char|rest], freq) do

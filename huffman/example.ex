@@ -10,11 +10,12 @@ defmodule Example do
   end
 
   def text() do
-      'this is something'
+      #'this is something'
+      'huffman'
   end
 
   def test() do
-      sample = sample()
+      sample = text()
       tree = build_tree(sample)
       encode = encode_table(tree)
   end
@@ -23,10 +24,10 @@ defmodule Example do
       sample = text()
       tree = build_tree(sample)
       encode = encode_table(tree)
-      #decode = decode_table(tree)
+      decode = decode_table(tree)
       text = text()
       seq = encode(text, encode)
-      #IO.inspect(decode(seq, decode))
+      IO.inspect(decode(seq, decode))
   end
 
   #count the letter frequencies and build the huffman tree
