@@ -27,15 +27,11 @@ defmodule Morse do
 
   def path(:nil, _) do [] end
   def path({:node, :na, long, short}, code) do
-    l = path(long, [?-|code])
-    s = path(short, [?.|code])
-    l ++ s
+    path(long, [?-|code]) ++ path(short, [?.|code])
   end
   def path({:node, char, long, short}, code) do
-    l = path(long, [?-|code])
-    s = path(short, [?.|code])
+    [{char, code}] ++ path(long, [?-|code]) ++ path(short, [?.|code])
     #[{char, Enum.reverse(code)}] ++ l ++ s
-    [{char, code}] ++ l ++ s
   end
 #----------------------------------------------------#
   def sort(l) do sort(l, []) end
