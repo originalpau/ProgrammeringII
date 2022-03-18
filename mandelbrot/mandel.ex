@@ -1,7 +1,7 @@
 defmodule Mandel do
 
   def mandelbrot(width, height, x, y, k, depth) do
-    trans = fn(width, height) -> Cmplx.new(x + k * (width-1), y-k * (height-1)) end
+    trans = fn(w, h) -> Cmplx.new(x + k * (w-1), y-k * (h-1)) end
     rows(width, height, trans, depth)
   end
 
