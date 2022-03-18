@@ -1,14 +1,21 @@
 defmodule Morse do
 
+  def name() do '.--. .- ..- .-.. .. -. .- ..-- .... ..- .- -. --. ' end
+
   def test() do
    table = encode_table()
    encode('paulina huang', table, [])
   end
 
   def test2() do
-    signal = rolled()
+    signal = name()
     decode(signal, morse(), [])
   end
+
+  def test3() do
+    path(morse(), [])
+  end
+
 #---------------Encode table -----------------------#
   def encode_table() do
     list = path(morse(), [])
@@ -51,7 +58,8 @@ defmodule Morse do
 
   # append list istället för [elem, ' ' | morse] för att få bort fnuttar, annars blir det
   # som flera element, komplexiteten på append beror på den första listan.
-  def encode([], _, morse) do Enum.reverse(morse) end
+  def encode([], _, morse) do Enum.reverse([32 | morse])
+  end
   def encode([c|rest], table, []) do
     encode(rest, table, elem(table, c))
   end
