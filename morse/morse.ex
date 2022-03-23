@@ -8,7 +8,7 @@ defmodule Morse do
   end
 
   def test2() do
-    signal = name()
+    signal = rolled()
     decode(signal, morse(), [])
   end
 
